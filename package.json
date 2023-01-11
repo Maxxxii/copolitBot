@@ -1,0 +1,18 @@
+{
+  "type": "module",
+  "name": "copilotbotv3",
+  "version": "1.0.0",
+  "description": "Slash CopilotBot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "author": "Kacper Cichocki",
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.11.6",
+    "discord.js": "^14.6.0",
+    "dotenv": "^16.0.3"
+  }
+}
