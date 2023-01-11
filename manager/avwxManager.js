@@ -1,13 +1,46 @@
+import { codeBlock } from 'discord.js';
 import dayjs from 'dayjs';
 
+export const getStationInfo = async function(id){
+    let report = "";
+    const response = await fetch(`https://avwx.rest/api/station/${id}?token=jC-yBLTFICJyQhhTtX-CUSaB8vFt-OPyxffZ65wdog0`);
+    await validateResponse(response);
+    const result = await response.json();
+    if(result.name){
+        report += `**Airport:** ${result.name}\n`;
+    }
+    if(result.city){
+        report += `**City:** ${result.city}\n`
+    }
+    if(result.country){
+        report += `**Country:** ${result.country}\n`
+    }
+    if(result.icao){
+        report += `**ICAO:** ${result.icao}\n`;
+    }
+    if(result.iata){
+        report += `**IATA:** ${result.iata}\n`;
+    }
+    if(result.elevation_ft){
+        report += `**Elevation:** ${result.elevation_ft}ft(${result.elevation_m}m)\n`;
+    }
+    if(result.latitude){
+        report += `**Latitude:** ${result.latitude}\n`;
+    }
+    if(result.longitude){
+        report += `**Longitude:** ${result.longitude}`;
+    }
+    return {
+        report
+    }
+}
 export const getMetar = async function(id){
     let readable = "";
     let raw;
     const response = await fetch(`https://avwx.rest/api/metar/${id}?token=jC-yBLTFICJyQhhTtX-CUSaB8vFt-OPyxffZ65wdog0&options=info,translate,speech`);
-    await validateResponse(response, `No station available at the moment near ${id}`);
+    await validateResponse(response);
     const result = await response.json();
     raw = await result.raw;
-    console.log(result.translate);
     readable += "**Station:** "
     if(result.info.icao){
         readable += `${result.info.icao}\n`
@@ -41,23 +74,35 @@ export const getMetar = async function(id){
     if(result.flight_rules){
         readable += "**Flight rules:** " + result.flight_rules;
     }
-
-    console.log(readable);
     return {
         raw,
         readable,
         speech: result.speech
     }
 } 
+export const getMultipleMetar = async function(idArray){
+    let metarArr = [];
+    let result = "";
+    let response = "";
+    for(let i = 0; i < idArray.length; i++){
+        response = await fetch(`https://avwx.rest/api/metar/${idArray[i]}?token=jC-yBLTFICJyQhhTtX-CUSaB8vFt-OPyxffZ65wdog0&options=info`);
+        await validateResponse(response);
+        result = await response.json();
+        metarArr.push(codeBlock(result.raw));
+    }
+    return{
+        metarArr
+    }
+    
+}
 export const getTaf = async function(id){
     let raw;
     let readable = "";
     const response = await fetch(`https://avwx.rest/api/taf/${id}?token=jC-yBLTFICJyQhhTtX-CUSaB8vFt-OPyxffZ65wdog0&options=info,translate,speech`);
-    await validateResponse(response, `No station available at the moment near ${id}`);    
+    await validateResponse(response);    
     const result = await response.json();
-    console.log(result);
     raw = await result.raw;
-    readable += "Station: "
+    readable += "**Station:** "
     if(result.info.icao){
         readable += `${result.info.icao}\n`
     }
@@ -65,19 +110,18 @@ export const getTaf = async function(id){
         readable += `${result.info.station}\n`;
     }
     const observedTime = dayjs(result.time.dt).format("HHmm[Z]");
-    readable += `Observed at: ${observedTime}\n`;
-    readable += `Report: ${result.speech}`;
-    console.log(readable);
+    readable += `**Observed at:** ${observedTime}\n`;
+    readable += `**Report:** ${result.speech}`;
     return {
         raw,
         readable,
         speech: result.speech
     }
 }
-function validateResponse(response, deafultError){
+function validateResponse(response){
     if(response.status !== 200){
         if(response.status == 204){
-            return Promise.reject(new Error("Airport has no metar station"));     
+            return Promise.reject(new Error("Airport has no weather station"));     
         }
         else{
             return Promise.reject(new Error("Wrong airport ID"));

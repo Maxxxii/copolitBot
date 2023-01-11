@@ -16,6 +16,7 @@ export const data =  new SlashCommandBuilder()
                 .setRequired(false))
 export async function execute(interaction){
     try{
+        await interaction.deferReply();
         const id = interaction.options.getString("id");
         const rawOnly = interaction.options.getBoolean("raw");
         const {raw, readable} = await getTaf(id);
@@ -29,10 +30,10 @@ export async function execute(interaction){
             else{
                 tafEmbed.addFields(
                     {name: "Raw report", value: `${codeBlock(raw)}`},
-                    {name: "Readable",value: `**${readable}**`}
+                    {name: "Readable",value: `${readable}`}
                 );
             }
-        await interaction.reply({
+        await interaction.editReply({
             embeds: [tafEmbed]
         });
     } catch(err){
