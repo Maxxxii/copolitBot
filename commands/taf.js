@@ -7,7 +7,7 @@ export const data =  new SlashCommandBuilder()
         .addStringOption((option) => 
             option
                 .setName("id")
-                .setDescription("Put ICAO, IATA or cordinates of airport")
+                .setDescription("Put ICAO, IATA or coordinates of airport")
                 .setRequired(true))
         .addBooleanOption((option) =>
             option
@@ -25,8 +25,10 @@ export async function execute(interaction){
             .setColor("ffffff")
             .setTimestamp()
             if(rawOnly){
-                tafEmbed.setDescription(codeBlock(raw))
-            } 
+                tafEmbed.addFields(
+                    {name: "Raw report", value: `${codeBlock(raw)}`} 
+                )
+            }
             else{
                 tafEmbed.addFields(
                     {name: "Raw report", value: `${codeBlock(raw)}`},

@@ -8,19 +8,19 @@ export const data =  new SlashCommandBuilder()
         .addStringOption((option) => 
             option
                 .setName("id")
-                .setDescription("Put ICAO, IATA or cordinates of airport")
+                .setDescription("Put ICAO, IATA or coordinates of airport")
                 .setRequired(true))
 export async function execute(interaction){
     try{        
         await interaction.deferReply();
-        let idArray = [];
+        let idArr = [];
         let fieldsArr = [];
         const id = interaction.options.getString("id");
         const { closestAirports } = await getNearbyAirports(id);
         for(let i = 0;i < closestAirports.length;i++){
-            idArray.push(closestAirports[i].icao_code);
+            idArr.push(closestAirports[i].icao_code);
         }
-        const { metarArr } = await getMultipleMetar(idArray);
+        const { metarArr } = await getMultipleMetar(idArr);
         for(let i=0;i < metarArr.length;i++){
             fieldsArr.push({name: `${closestAirports[i].icao_code} (${closestAirports[i].name}). Distance: ${Math.round(closestAirports[i].distance*0.621371)}nm`, value: `${metarArr[i]}`})
         }

@@ -1,5 +1,5 @@
 import { codeBlock, EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import { getMetar } from '../manager/avwxManager.js';
+import { checkWeatherConditions, getMetar } from '../manager/avwxManager.js';
 
 export const data =  new SlashCommandBuilder()
         .setName("metar")
@@ -7,7 +7,7 @@ export const data =  new SlashCommandBuilder()
         .addStringOption((option) => 
             option
                 .setName("id")
-                .setDescription("Put ICAO, IATA or cordinates of airport")
+                .setDescription("Put ICAO, IATA or coordinates of airport")
                 .setRequired(true))
         .addBooleanOption((option) =>
             option
@@ -19,13 +19,15 @@ export async function execute(interaction){
         await interaction.deferReply();
         const id = interaction.options.getString("id");
         const rawOnly = interaction.options.getBoolean("raw");
-        const {raw, readable} = await getMetar(id);
+        const {raw, readable, result} = await getMetar(id);        
         const metarEmbed = new EmbedBuilder()
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
             if(rawOnly){
-                metarEmbed.setDescription(codeBlock(raw))
+                metarEmbed.addFields(
+                    {name: "**Raw report**", value: `${codeBlock(raw)}`}
+                );
             } 
             else{
                 metarEmbed.addFields(
@@ -33,12 +35,15 @@ export async function execute(interaction){
                     {name: "**Decoded report**",value: `${readable}`}
                 );
             }
-            
+            if(result.wind_gust?.value > 25 || result.wind_speed?.value > 25 || result.visibility?.value < 200){
+                const {fieldsArr} = await checkWeatherConditions(result,id);
+                metarEmbed.addFields(fieldsArr);
+            }
         await interaction.editReply({
             embeds: [metarEmbed]
         });
     } catch(err){
-        interaction.reply(err.message);
+        interaction.editReply(err.message);
         console.error(err);
     }
     

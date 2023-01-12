@@ -7,10 +7,10 @@ export const data =  new SlashCommandBuilder()
         .addStringOption((option) => 
             option
                 .setName("id")
-                .setDescription("Put ICAO, IATA or cordinates of airport")
+                .setDescription("Put ICAO, IATA or coordinates of airport")
                 .setRequired(true))
 export async function execute(interaction){
-    try{        
+    try{
         await interaction.deferReply();
         const id = interaction.options.getString("id");
         const { report } = await getStationInfo(id);

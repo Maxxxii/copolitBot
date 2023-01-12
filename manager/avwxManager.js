@@ -1,5 +1,6 @@
 import { codeBlock } from 'discord.js';
 import dayjs from 'dayjs';
+import { getNearbyAirports } from './airlabsManager.js';
 
 export const getStationInfo = async function(id){
     let report = "";
@@ -31,7 +32,8 @@ export const getStationInfo = async function(id){
         report += `**Longitude:** ${result.longitude}`;
     }
     return {
-        report
+        report,
+        result
     }
 }
 export const getMetar = async function(id){
@@ -74,10 +76,20 @@ export const getMetar = async function(id){
     if(result.flight_rules){
         readable += "**Flight rules:** " + result.flight_rules;
     }
+    if(result.wind_speed?.value > 20){
+        readable += `\n\n**Due to strong wind, we recomennd divert. Suggested alternates you can see below.**`
+    }
+    else if(result.wind_gust?.value > 20){
+        readable += `\n\n**Due to strong gusts, we recomennd divert. Suggested alternates you can see below.**`
+    }    
+    else if(result.visibility?.value < 200){
+        readable += `\n\n**Due to low visibility, we recomennd divert. Suggested alternates you can see below.**`
+    }
     return {
         raw,
         readable,
-        speech: result.speech
+        speech: result.speech,
+        result
     }
 } 
 export const getMultipleMetar = async function(idArray){
@@ -116,6 +128,28 @@ export const getTaf = async function(id){
         raw,
         readable,
         speech: result.speech
+    }
+}
+export const checkWeatherConditions = async function(metar, id){
+    let idArr = [];
+    let fieldsArr = [];
+    if(metar.wind_gust?.value > 20 || metar.wind_speed?.value > 20 || metar.visibility?.value < 200){
+        const { closestAirports } = await getNearbyAirports(id);
+        if(!closestAirports){
+            fieldsArr.push({name: "No suitable airport within 300km."});
+        }
+        else{
+            for(let i = 0;i < closestAirports.length;i++){
+                idArr.push(closestAirports[i].icao_code);
+            }
+            const { metarArr } = await getMultipleMetar(idArr);
+            for(let i=0;i < metarArr.length;i++){
+                fieldsArr.push({name: `${closestAirports[i].icao_code} (${closestAirports[i].name}). Distance: ${Math.round(closestAirports[i].distance*0.621371)}nm`, value: `${metarArr[i]}`})
+            }
+        }        
+    }
+    return{
+        fieldsArr
     }
 }
 function validateResponse(response){
