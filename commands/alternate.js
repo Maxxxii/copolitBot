@@ -22,7 +22,7 @@ export async function execute(interaction){
         }
         const { metarArr } = await getMultipleMetar(idArr);
         for(let i=0;i < metarArr.length;i++){
-            fieldsArr.push({name: `${closestAirports[i].icao_code} (${closestAirports[i].name}). Distance: ${Math.round(closestAirports[i].distance*0.621371)}nm`, value: `${metarArr[i]}`})
+            fieldsArr.push({name: `${closestAirports[i].icao_code} (${closestAirports[i].name}). Distance: ${Math.round(closestAirports[i].distance*0.621371)}nm`, value: `${codeBlock(metarArr[i].raw)}`})
         }
         const alternateEmbed = new EmbedBuilder()
             .setAuthor({ name: "CopilotBot" })
