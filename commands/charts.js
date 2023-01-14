@@ -1,27 +1,24 @@
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import { getStationInfo } from '../manager/avwxManager.js';
 
 export const data =  new SlashCommandBuilder()
-        .setName("info")
-        .setDescription("Get info about airport")
+        .setName("charts")
+        .setDescription("Get charts for airport")
         .addStringOption((option) => 
             option
-                .setName("id")
-                .setDescription("Put ICAO, IATA or coordinates of airport")
+                .setName("icao")
+                .setDescription("Put ICAO")
                 .setRequired(true))
 export async function execute(interaction){
-    try{
+    try{        
         await interaction.deferReply();
-        const id = interaction.options.getString("id");
-        const { report } = await getStationInfo(id);
-        const infoEmbed = new EmbedBuilder()
+        const icao = interaction.options.getString("icao");
+        const chartsEmbed = new EmbedBuilder()
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
-            .addFields({name: "Report", value: report})
-            
+            .setDescription(`**Your charts are [here](https://lukeairtool.net/viewchart.php?icao=${icao})**`)
         await interaction.editReply({
-            embeds: [infoEmbed]
+            embeds: [chartsEmbed]
         });
     } catch(err){
         const errorEmbed = new EmbedBuilder()
@@ -36,5 +33,3 @@ export async function execute(interaction){
     }
     
 }
-
-

@@ -1,4 +1,4 @@
-import { codeBlock, EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { getAlternatesMetar } from "../manager/avwxManager.js";
 
 export const data =  new SlashCommandBuilder()

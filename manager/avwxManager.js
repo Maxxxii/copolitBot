@@ -1,4 +1,4 @@
-import { codeBlock, MessageType } from 'discord.js';
+import { codeBlock } from 'discord.js';
 import dayjs from 'dayjs';
 import { getNearbyAirports } from './airlabsManager.js';
 
@@ -83,13 +83,13 @@ export const getMetar = async function(id){
         result
     }
 } 
-export const getMultipleMetar = async function(idArray){
+export const getMultipleMetar = async function(idArr){
     let metarArr = [];
-    for(let i=0; i < idArray.length; i++){
-        const response = await fetch(`https://avwx.rest/api/metar/${idArray[i]}?token=jC-yBLTFICJyQhhTtX-CUSaB8vFt-OPyxffZ65wdog0&options=info`);
+    for(let i=0; i < idArr.length; i++){
+        const response = await fetch(`https://avwx.rest/api/metar/${idArr[i]}?token=jC-yBLTFICJyQhhTtX-CUSaB8vFt-OPyxffZ65wdog0&options=info`);
         await validateResponse(response);
         const result = await response.json();
-        metarArr.push(result);    
+        metarArr.push(result);
     }    
     return{
         metarArr
@@ -139,10 +139,10 @@ export const getAlternatesMetar = async function(id){
 function validateResponse(response){
     if(response.status !== 200){
         if(response.status == 204){
-            return Promise.reject(new Error("Airport doesn't provide this type of information."));     
+            return Promise.reject(new Error("Airport doesn't provide this type of information"));     
         }
         else{
-            return Promise.reject(new Error("Wrong airport ID."));
+            return Promise.reject(new Error("Wrong airport ID"));
         }
         
     }

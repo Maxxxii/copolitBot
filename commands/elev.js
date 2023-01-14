@@ -1,27 +1,28 @@
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import { getStationInfo } from '../manager/avwxManager.js';
+import { getAirportElevation } from "../manager/airportDbManager.js";
+
 
 export const data =  new SlashCommandBuilder()
-        .setName("info")
-        .setDescription("Get info about airport")
+        .setName("elev")
+        .setDescription("Get elvation of airport")
         .addStringOption((option) => 
             option
-                .setName("id")
-                .setDescription("Put ICAO, IATA or coordinates of airport")
+                .setName("icao")
+                .setDescription("Put ICAO")
                 .setRequired(true))
 export async function execute(interaction){
-    try{
+    try{        
         await interaction.deferReply();
-        const id = interaction.options.getString("id");
-        const { report } = await getStationInfo(id);
-        const infoEmbed = new EmbedBuilder()
+        const icao = interaction.options.getString("icao");
+        const { airportElev, runwaysElevArr } = await getAirportElevation(icao);
+        const elevEmbed = new EmbedBuilder()
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
-            .addFields({name: "Report", value: report})
-            
+            .setTitle(airportElev)
+            .setDescription(runwaysElevArr.join("\n"))
         await interaction.editReply({
-            embeds: [infoEmbed]
+            embeds: [elevEmbed]
         });
     } catch(err){
         const errorEmbed = new EmbedBuilder()
@@ -36,5 +37,3 @@ export async function execute(interaction){
     }
     
 }
-
-
