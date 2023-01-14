@@ -39,7 +39,14 @@ export async function execute(interaction){
             embeds: [tafEmbed]
         });
     } catch(err){
-        interaction.reply(err.message);
+        const errorEmbed = new EmbedBuilder()
+            .setAuthor({ name: "CopilotBot" })
+            .setColor("ffffff")
+            .setTimestamp()
+            .setDescription(err.message);
+        interaction.editReply({
+            embeds: [errorEmbed]
+        });
         console.error(err);
     }
     

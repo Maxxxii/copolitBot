@@ -1,6 +1,5 @@
 import { codeBlock, EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import { getNearbyAirports} from '../manager/airlabsManager.js';
-import { getMultipleMetar } from "../manager/avwxManager.js";
+import { getAlternatesMetar } from "../manager/avwxManager.js";
 
 export const data =  new SlashCommandBuilder()
         .setName("alternate")
@@ -13,17 +12,8 @@ export const data =  new SlashCommandBuilder()
 export async function execute(interaction){
     try{        
         await interaction.deferReply();
-        let idArr = [];
-        let fieldsArr = [];
         const id = interaction.options.getString("id");
-        const { closestAirports } = await getNearbyAirports(id);
-        for(let i = 0;i < closestAirports.length;i++){
-            idArr.push(closestAirports[i].icao_code);
-        }
-        const { metarArr } = await getMultipleMetar(idArr);
-        for(let i=0;i < metarArr.length;i++){
-            fieldsArr.push({name: `${closestAirports[i].icao_code} (${closestAirports[i].name}). Distance: ${Math.round(closestAirports[i].distance*0.621371)}nm`, value: `${codeBlock(metarArr[i].raw)}`})
-        }
+        const {fieldsArr} = await getAlternatesMetar(id);
         const alternateEmbed = new EmbedBuilder()
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
@@ -33,7 +23,14 @@ export async function execute(interaction){
             embeds: [alternateEmbed]
         });
     } catch(err){
-        interaction.editReply(err.message);
+        const errorEmbed = new EmbedBuilder()
+            .setAuthor({ name: "CopilotBot" })
+            .setColor("ffffff")
+            .setTimestamp()
+            .setDescription(err.message);
+        interaction.editReply({
+            embeds: [errorEmbed]
+        });
         console.error(err);
     }
     

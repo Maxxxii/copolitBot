@@ -1,5 +1,5 @@
 import { codeBlock, EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import { checkWeatherConditions, getMetar } from '../manager/avwxManager.js';
+import { getAlternatesMetar, getMetar } from '../manager/avwxManager.js';
 
 export const data =  new SlashCommandBuilder()
         .setName("metar")
@@ -37,22 +37,29 @@ export async function execute(interaction){
             }
             if(result.wind_gust?.value > 25 || result.wind_speed?.value > 20 || result.visibility?.value < 200){
                 if(result.wind_speed?.value > 20){
-                    metarEmbed.addFields({name: "Alternates", value: `\n\n**Due to strong wind, we recomennd divert. Suggested alternates you can see below.**`});
+                    metarEmbed.addFields({name: "Alert", value: `\n\n**Due to strong wind, we recomennd divert. Suggested alternates you can see below.**`});
                 }
-                else if(result.wind_gust?.value > 20){
-                    metarEmbed.addFields({name: "Alternates", value: `\n\n**Due to strong gusts, we recomennd divert. Suggested alternates you can see below.**`});
+                else if(result.wind_gust?.value > 25){
+                    metarEmbed.addFields({name: "Alert", value: `\n\n**Due to strong gusts, we recomennd divert. Suggested alternates you can see below.**`});
                 }    
                 else if(result.visibility?.value < 200){
-                    metarEmbed.addFields({name: "Alterntes", value: `\n\n**Due to low visibility, we recomennd divert. Suggested alternates you can see below.**`}); 
+                    metarEmbed.addFields({name: "Alert", value: `\n\n**Due to low visibility, we recomennd divert. Suggested alternates you can see below.**`}); 
                 }
-                const {fieldsArr} = await checkWeatherConditions(result,id);
+                const {fieldsArr} = await getAlternatesMetar(id);
                 metarEmbed.addFields(fieldsArr);
             }
         await interaction.editReply({
             embeds: [metarEmbed]
         });
     } catch(err){
-        interaction.editReply(err.message);
+        const errorEmbed = new EmbedBuilder()
+            .setAuthor({ name: "CopilotBot" })
+            .setColor("ffffff")
+            .setTimestamp()
+            .setDescription(err.message);
+        interaction.editReply({
+            embeds: [errorEmbed]
+        });
         console.error(err);
     }
     

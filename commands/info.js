@@ -14,7 +14,6 @@ export async function execute(interaction){
         await interaction.deferReply();
         const id = interaction.options.getString("id");
         const { report } = await getStationInfo(id);
-        console.log(report);
         const infoEmbed = new EmbedBuilder()
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
@@ -25,7 +24,14 @@ export async function execute(interaction){
             embeds: [infoEmbed]
         });
     } catch(err){
-        interaction.editReply(err.message);
+        const errorEmbed = new EmbedBuilder()
+            .setAuthor({ name: "CopilotBot" })
+            .setColor("ffffff")
+            .setTimestamp()
+            .setDescription(err.message);
+        interaction.editReply({
+            embeds: [errorEmbed]
+        });
         console.error(err);
     }
     

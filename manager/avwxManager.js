@@ -26,10 +26,10 @@ export const getStationInfo = async function(id){
         report += `**Elevation:** ${result.elevation_ft}ft(${result.elevation_m}m)\n`;
     }
     if(result.latitude){
-        report += `**Latitude:** ${result.latitude}\n`;
+        report += `**Latitude:** ${Math.round((result.latitude + Number.EPSILON) * 10000) / 10000}\n`;
     }
     if(result.longitude){
-        report += `**Longitude:** ${result.longitude}`;
+        report += `**Longitude:** ${Math.round((result.longitude + Number.EPSILON) * 10000) / 10000}\n`;
     }
     return {
         report,
@@ -50,7 +50,7 @@ export const getMetar = async function(id){
     else{
         readable += `${result.info.station}\n`;
     }
-    const observedTime = dayjs(result.time.dt).format("HHmm[Z]");
+    const observedTime = dayjs(result.time.dt).format("HH:mm");
     readable += `**Observed at:** ${observedTime}\n`;
     if(result.translate.wind){
         readable += "**Wind: **" + result.translate.wind + "\n";
@@ -85,12 +85,10 @@ export const getMetar = async function(id){
 } 
 export const getMultipleMetar = async function(idArray){
     let metarArr = [];
-    let result = "";
-    let response = "";
     for(let i=0; i < idArray.length; i++){
-        response = await fetch(`https://avwx.rest/api/metar/${idArray[i]}?token=jC-yBLTFICJyQhhTtX-CUSaB8vFt-OPyxffZ65wdog0&options=info`);
+        const response = await fetch(`https://avwx.rest/api/metar/${idArray[i]}?token=jC-yBLTFICJyQhhTtX-CUSaB8vFt-OPyxffZ65wdog0&options=info`);
         await validateResponse(response);
-        result = await response.json();
+        const result = await response.json();
         metarArr.push(result);    
     }    
     return{
@@ -121,17 +119,14 @@ export const getTaf = async function(id){
         speech: result.speech
     }
 }
-export const checkWeatherConditions = async function(metar, id){
-    let idArr = [];
+export const getAlternatesMetar = async function(id){
     let fieldsArr = [];
     const { closestAirports } = await getNearbyAirports(id);
-    if(!closestAirports){
-        fieldsArr.push({name: "No suitable airport within 300km."});
+    if(!closestAirports.length){
+        fieldsArr.push({name: "Alternates", value: "No suitable airport within 300km."});
     }
     else{
-        for(let i = 0;i < closestAirports.length;i++){
-            idArr.push(closestAirports[i].icao_code);
-        }
+        const idArr = closestAirports.map(airport => airport.icao_code);
         const { metarArr } = await getMultipleMetar(idArr);
         for(let i=0;i < metarArr.length;i++){
             fieldsArr.push({name: `${closestAirports[i].icao_code} (${closestAirports[i].name}). Distance: ${Math.round(closestAirports[i].distance*0.621371)}nm`, value: `${codeBlock(metarArr[i].raw)}`})
@@ -144,10 +139,10 @@ export const checkWeatherConditions = async function(metar, id){
 function validateResponse(response){
     if(response.status !== 200){
         if(response.status == 204){
-            return Promise.reject(new Error("Airport has no weather station"));     
+            return Promise.reject(new Error("Airport doesn't provide this type of information."));     
         }
         else{
-            return Promise.reject(new Error("Wrong airport ID"));
+            return Promise.reject(new Error("Wrong airport ID."));
         }
         
     }
