@@ -13,7 +13,7 @@ export const getVatsimAtis = async function(icao){
         }
     }
     if(!vatsimAtis){
-        vatsimAtis = {name: "VATSIM", value: "**No ATIS for this airport**"};
+        vatsimAtis = {name: "VATSIM", value: "No ATIS for this airport"};
     }
     return{
         vatsimAtis

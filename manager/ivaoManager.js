@@ -13,7 +13,7 @@ export const getIvaoAtis = async function(icao){
         }
     }
     if(!ivaoAtis){
-        ivaoAtis = {name: "IVAO", value: "**No ATIS for this airport**"};
+        ivaoAtis = {name: "IVAO", value: "No ATIS for this airport"};
     }
     return{
         ivaoAtis
