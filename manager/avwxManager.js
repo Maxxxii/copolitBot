@@ -119,11 +119,11 @@ export const getTaf = async function(id){
         speech: result.speech
     }
 }
-export const getAlternatesMetar = async function(id){
+export const getAlternatesMetar = async function(id, range){
     let fieldsArr = [];
-    const { closestAirports } = await getNearbyAirports(id);
+    const { closestAirports } = await getNearbyAirports(id, range);
     if(!closestAirports.length){
-        fieldsArr.push({name: "Alternates", value: "No suitable airport within 300km."});
+        fieldsArr.push({name: "Alternates", value: `No suitable airport within ${range}km.`});
     }
     else{
         const idArr = closestAirports.map(airport => airport.icao_code);
@@ -139,7 +139,7 @@ export const getAlternatesMetar = async function(id){
 function validateResponse(response){
     if(response.status !== 200){
         if(response.status == 204){
-            return Promise.reject(new Error("Airport doesn't provide this type of information"));     
+            return Promise.reject(new Error("Airport doesn't provide metar/taf information"));     
         }
         else{
             return Promise.reject(new Error("Wrong airport ID"));

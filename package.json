@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "copilotbotv3",
-  "version": "0.6.0",
+  "version": "0.6.3",
   "description": "Slash CopilotBot",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,7 @@
   "dependencies": {
     "dayjs": "^1.11.6",
     "discord.js": "^14.6.0",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "geomag": "^1.0.0"
   }
 }

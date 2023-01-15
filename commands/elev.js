@@ -8,7 +8,7 @@ export const data =  new SlashCommandBuilder()
         .addStringOption((option) => 
             option
                 .setName("icao")
-                .setDescription("Put ICAO")
+                .setDescription("Put ICAO of airport")
                 .setRequired(true))
 export async function execute(interaction){
     try{        

@@ -6,14 +6,14 @@ export const data =  new SlashCommandBuilder()
         .setDescription("Get info about airport")
         .addStringOption((option) => 
             option
-                .setName("id")
-                .setDescription("Put ICAO, IATA or coordinates of airport")
+                .setName("icao")
+                .setDescription("Put ICAO of airport")
                 .setRequired(true))
 export async function execute(interaction){
     try{
         await interaction.deferReply();
-        const id = interaction.options.getString("id");
-        const { report } = await getStationInfo(id);
+        const icao = interaction.options.getString("icao");
+        const { report } = await getStationInfo(icao);
         const infoEmbed = new EmbedBuilder()
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")

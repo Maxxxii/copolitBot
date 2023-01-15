@@ -10,18 +10,40 @@ export const data =  new SlashCommandBuilder()
                 .setName("icao")
                 .setDescription("Put ICAO")
                 .setRequired(true))
+        .addBooleanOption((option) =>
+            option
+                .setName("vatsim-only")
+                .setDescription("Choose if you want atis only from VATSIM")
+                .setRequired(false))
+        .addBooleanOption((option) =>
+            option
+                .setName("ivao-only")
+                .setDescription("Choose if you want atis only from IVAO")
+                .setRequired(false))
 export async function execute(interaction){
     try{        
         await interaction.deferReply();
         const icao = interaction.options.getString("icao");
-        const { vatsimAtis } = await getVatsimAtis(icao);
-        const { ivaoAtis} = await getIvaoAtis(icao);
+        const vatsimOnly = interaction.options.getBoolean("vatsim-only");
+        const ivaoOnly = interaction.options.getBoolean("ivao-only");
         const atisEmbed = new EmbedBuilder()
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
             .setTitle(`ATIS for ${icao.toUpperCase()}`)
-            .addFields(vatsimAtis, ivaoAtis);
+            if(vatsimOnly){                
+                const { vatsimAtis } = await getVatsimAtis(icao);                
+                atisEmbed.addFields(vatsimAtis);
+            }
+            else if(ivaoOnly){
+                const { ivaoAtis } = await getIvaoAtis(icao);  
+                atisEmbed.addFields(ivaoAtis);
+            }
+            else{
+                const { ivaoAtis } = await getIvaoAtis(icao);
+                const { vatsimAtis } = await getVatsimAtis(icao);
+                atisEmbed.addFields(vatsimAtis, ivaoAtis);
+            }
         await interaction.editReply({
             embeds: [atisEmbed]
         });

@@ -6,8 +6,8 @@ export const data =  new SlashCommandBuilder()
         .setDescription("Get taf from airport")
         .addStringOption((option) => 
             option
-                .setName("id")
-                .setDescription("Put ICAO, IATA or coordinates of airport")
+                .setName("icao")
+                .setDescription("Put ICAO of airport")
                 .setRequired(true))
         .addBooleanOption((option) =>
             option
@@ -17,9 +17,9 @@ export const data =  new SlashCommandBuilder()
 export async function execute(interaction){
     try{
         await interaction.deferReply();
-        const id = interaction.options.getString("id");
+        const icao = interaction.options.getString("icao");
         const rawOnly = interaction.options.getBoolean("raw");
-        const {raw, readable} = await getTaf(id);
+        const {raw, readable} = await getTaf(icao);
         const tafEmbed = new EmbedBuilder()
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
