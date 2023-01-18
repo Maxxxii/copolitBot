@@ -1,4 +1,5 @@
 import { codeBlock } from "discord.js";
+import dayjs from 'dayjs';
 export const getVatsimAtis = async function(icao){
     let vatsimAtis;
     const response = await fetch(`https://data.vatsim.net/v3/vatsim-data.json`);
@@ -39,5 +40,37 @@ export const getVatsimAtc = async function(icao){
     }
     return {
         vatsimAtc
+    }
+}
+export const getVatsimEvents = async function(icao){
+    let vatsimEvents;
+    const eventsArr = [];
+    const response = await fetch(`https://my.vatsim.net/api/v1/events/all`);
+    const result = await response.json();
+    for(let i = 0; i < result.data.length;i++){
+        for(let k = 0; k < result.data[i].airports.length;k++){
+            if(result.data[i].airports[k].icao === icao.toUpperCase()){
+                const startDate = dayjs(result.data[i].start_time).format("YYYY-MM-DD");
+                const endDate = dayjs(result.data[i].end_time).format("YYYY-MM-DD");
+                const eventDate = startDate + "-" + endDate;
+                eventsArr.push(
+                    `Name: **${result.data[i].name}**
+                    Airports: ${result.data[i].airports.map(airport => ` **${airport.icao}**`)}
+                    Date: **${startDate == endDate ? startDate : eventDate}**
+                    Start time: **${dayjs(result.data[i].start_time).format("HH:mm")}Z**
+                    End time: **${dayjs(result.data[i].end_time).format("HH:mm")}Z**`
+                )
+                break;
+            }
+        }
+    }
+    if(eventsArr.length != 0){
+        vatsimEvents = {name: "VATSIM", value: eventsArr.join("\n\n")};
+    }
+    else{
+        vatsimEvents = {name: "VATSIM", value: "No scheduled events on airpot"};
+    }
+    return{
+        vatsimEvents
     }
 }

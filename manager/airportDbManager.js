@@ -34,7 +34,6 @@ export const getAirportRunways = async function(icao){
         runwaysArr
     }
 }
-
 function validateResponse(response){
     if(response.status !== 200){
         if(response.status == 204){
