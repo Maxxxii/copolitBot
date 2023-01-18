@@ -19,3 +19,25 @@ export const getVatsimAtis = async function(icao){
         vatsimAtis
     }
 }
+export const getVatsimAtc = async function(icao){
+    let vatsimAtc;
+    const controllersArr = [];
+    const response = await fetch(`https://data.vatsim.net/v3/vatsim-data.json`);
+    const result = await response.json();
+    const controllers = result.controllers;
+    for(let i = 0; i < controllers.length;i++){
+        const atcCallsign = controllers[i].callsign;
+        if(atcCallsign.startsWith(icao.toUpperCase())){
+            controllersArr.push(`**${atcCallsign}** ${controllers[i].frequency} ${controllers[i].name}`);
+        }
+    }
+    if(controllersArr.length != 0){
+        vatsimAtc = {name: "VATSIM", value: controllersArr.join("\n")};
+    }
+    else{
+        vatsimAtc = {name: "VATSIM", value: "No active controllers."};
+    }
+    return {
+        vatsimAtc
+    }
+}
