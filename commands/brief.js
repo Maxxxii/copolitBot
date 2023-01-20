@@ -40,7 +40,7 @@ export async function execute(interaction){
             .setColor("ffffff")
             .setTimestamp()
             .setDescription(`**${name}**`)
-            .addFields(vatsimAtis, ivaoAtis, {name: "Metar", value: `**${result.raw}**`}, {name: "Charts", value: `Charts for this airport are **[here](https://lukeairtool.net/viewchart.php?icao=${icao})**`}, {name: "Runways", value: `Best runways for takeoff/landing: **${namesOfRunways.sort().join(", ")}**`}, {name: "ILS", value: ilsArr.join("\n")})
+            .addFields(vatsimAtis, ivaoAtis, {name: "Metar", value: `**${result.raw}    **`}, {name: "Charts", value: `Charts for this airport are **[here](https://lukeairtool.net/viewchart.php?icao=${icao})**`}, {name: "Runways", value: `Best runways for takeoff/landing: **${namesOfRunways.sort().join(", ")}**`}, {name: "ILS", value: ilsArr.join("\n")})
         await interaction.editReply({
             embeds: [briefEmbed]
         });
