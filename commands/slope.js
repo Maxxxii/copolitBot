@@ -1,4 +1,5 @@
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { getAirportSlope } from "../manager/airportDbManager.js";
 
 export const data =  new SlashCommandBuilder()
         .setName("slope")
@@ -12,13 +13,15 @@ export async function execute(interaction){
     try{        
         await interaction.deferReply();
         const icao = interaction.options.getString("icao");
-        const chartsEmbed = new EmbedBuilder()
+        const { slopeArr } = await getAirportSlope(icao);
+        const slopesArr = slopeArr.map(slope => `**Runway ${slope.rwy}: ${Math.round(slope.slope*100)/100}°**`)
+        const slopeEmbed = new EmbedBuilder()
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
-            .setDescription(`**Your charts are [here](https://lukeairtool.net/viewchart.php?icao=${icao})**`)
+            .setDescription(slopesArr.join("\n"))
         await interaction.editReply({
-            embeds: [chartsEmbed]
+            embeds: [slopeEmbed]
         });
     } catch(err){
         const errorEmbed = new EmbedBuilder()

@@ -43,6 +43,24 @@ export const getAirportName = async function(icao){
         name
     }
 }
+export const getAirportSlope = async function(icao){
+    const response = await fetch(`https://airportdb.io/api/v1/airport/${icao}?apiToken=3e316dbfeeb1c47ab4bd821cb3faeed1f608d02cdd6eb86c1e704a13d58a83d12d66d1ae440bca38326c065ff8b631b3`);
+    await validateResponse(response);
+    const result = await response.json();
+    const runways = result.runways;
+    const allSlopeArr = runways.flatMap(runway => {
+        if(runway.closed == 0){
+            const leSlope = (runway.he_elevation_ft - runway.le_elevation_ft)/(runway.length_ft/3.2808)*100;
+            const heSlope = (runway.le_elevation_ft - runway.he_elevation_ft)/(runway.length_ft/3.2808)*100;
+            return [{rwy: runway.le_ident, slope: leSlope}, {rwy: runway.he_ident, slope: heSlope}]
+        }
+    });
+    const slopeArr = allSlopeArr.filter(runway => runway !== undefined);
+    return {
+        slopeArr
+    }
+    
+}
 function validateResponse(response){
     if(response.status !== 200){
         if(response.status == 204){

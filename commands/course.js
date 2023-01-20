@@ -15,14 +15,14 @@ export async function execute(interaction){
         const icao = interaction.options.getString("icao");
         const { runwaysArr } = await getAirportRunways(icao);
         const coursesArr = runwaysArr.map(runway => `**Runway ${runway.rwy}: ${Math.round(runway.hdg*100)/100}°**`)
-        const chartsEmbed = new EmbedBuilder()
+        const courseEmbed = new EmbedBuilder()
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
             .setTitle(`Courses of runways on ${icao}`)
             .setDescription(coursesArr.join("\n"))
         await interaction.editReply({
-            embeds: [chartsEmbed]
+            embeds: [courseEmbed]
         });
     } catch(err){
         const errorEmbed = new EmbedBuilder()
