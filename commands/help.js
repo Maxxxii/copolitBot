@@ -25,6 +25,7 @@ export async function execute(interaction){
                 {name: `name <ICAO>`, value: `Shows full name of requested airport`},
                 {name: `help`, value: `Shows all available CopilotBot commands`}
             )
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
         await interaction.editReply({
             embeds: [helpEmbed]
         });
@@ -33,7 +34,8 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
-            .setDescription(err.message);
+            .setDescription(err.message)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"});
         interaction.editReply({
             embeds: [errorEmbed]
         });

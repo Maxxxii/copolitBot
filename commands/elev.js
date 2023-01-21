@@ -21,6 +21,7 @@ export async function execute(interaction){
             .setTimestamp()
             .setTitle(airportElev)
             .setDescription(runwaysElevArr.join("\n"))
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
         await interaction.editReply({
             embeds: [elevEmbed]
         });
@@ -29,7 +30,8 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
-            .setDescription(err.message);
+            .setDescription(err.message)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
         interaction.editReply({
             embeds: [errorEmbed]
         });

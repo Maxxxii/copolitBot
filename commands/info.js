@@ -19,7 +19,7 @@ export async function execute(interaction){
             .setColor("ffffff")
             .setTimestamp()
             .addFields({name: "Report", value: report})
-            
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"})            
         await interaction.editReply({
             embeds: [infoEmbed]
         });
@@ -28,7 +28,8 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
-            .setDescription(err.message);
+            .setDescription(err.message)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"});
         interaction.editReply({
             embeds: [errorEmbed]
         });

@@ -28,6 +28,7 @@ export async function execute(interaction){
             .setColor("ffffff")
             .setTimestamp()
             .setFields(fieldsArr)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
         await interaction.editReply({
             embeds: [alternateEmbed]
         });
@@ -36,7 +37,8 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
-            .setDescription(err.message);
+            .setDescription(err.message)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"});
         interaction.editReply({
             embeds: [errorEmbed]
         });

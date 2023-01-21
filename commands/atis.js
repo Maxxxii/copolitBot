@@ -31,6 +31,7 @@ export async function execute(interaction){
             .setColor("ffffff")
             .setTimestamp()
             .setTitle(`ATIS for ${icao.toUpperCase()}`)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
             if(vatsimOnly){                
                 const { vatsimAtis } = await getVatsimAtis(icao);                
                 atisEmbed.addFields(vatsimAtis);
@@ -52,7 +53,8 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
-            .setDescription(err.message);
+            .setDescription(err.message)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"});
         interaction.editReply({
             embeds: [errorEmbed]
         });

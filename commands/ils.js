@@ -28,6 +28,7 @@ export async function execute(interaction){
             .setTimestamp()
             .setTitle(`ILS for ${icao.toUpperCase()}`)
             .setDescription(ilsArr.join("\n"))
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
         await interaction.editReply({
             embeds: [ilsEmbed]
         });
@@ -36,7 +37,8 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
-            .setDescription(err.message);
+            .setDescription(err.message)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"});
         interaction.editReply({
             embeds: [errorEmbed]
         });

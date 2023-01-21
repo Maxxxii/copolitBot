@@ -41,6 +41,7 @@ export async function execute(interaction){
             .setTimestamp()
             .setDescription(`**${name}**`)
             .addFields(vatsimAtis, ivaoAtis, {name: "Metar", value: `**${result.raw}**`}, {name: "Charts", value: `Charts for this airport are **[here](https://lukeairtool.net/viewchart.php?icao=${icao})**`}, {name: "Runways", value: `Best runways for takeoff/landing: **${namesOfRunways.sort().join(", ")}**`}, {name: "ILS", value: ilsArr.join("\n")})
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
         await interaction.editReply({
             embeds: [briefEmbed]
         });
@@ -49,7 +50,8 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
-            .setDescription(err.message);
+            .setDescription(err.message)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"});
         interaction.editReply({
             embeds: [errorEmbed]
         });

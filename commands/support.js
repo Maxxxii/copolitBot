@@ -12,6 +12,7 @@ export async function execute(interaction){
             .setTimestamp()
             .setTitle("Support me in developing CopilotBot")
             .setDescription("You can support me here - https://www.buymeacoffee.com/CopilotBot")
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
         await interaction.editReply({
             embeds: [supportEmbed]
         });
@@ -20,7 +21,8 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
-            .setDescription(err.message);
+            .setDescription(err.message)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"});
         interaction.editReply({
             embeds: [errorEmbed]
         });

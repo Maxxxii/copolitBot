@@ -12,6 +12,7 @@ export async function execute(interaction){
             .setTimestamp()
             .setTitle("Join our discord!")
             .setDescription("Link to discord server is [here](https://discord.gg/fCvdBjZQ3X)")
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
         await interaction.editReply({
             embeds: [discordEmbed]
         });
@@ -20,7 +21,8 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
-            .setDescription(err.message);
+            .setDescription(err.message)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"});
         interaction.editReply({
             embeds: [errorEmbed]
         });

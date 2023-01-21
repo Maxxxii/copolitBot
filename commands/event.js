@@ -20,6 +20,7 @@ export async function execute(interaction){
             .setTimestamp()
             .setTitle("Scheduled events on " + icao.toUpperCase())
             .addFields(vatsimEvents)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
         await interaction.editReply({
             embeds: [chartsEmbed]
         });
@@ -28,7 +29,8 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
-            .setDescription(err.message);
+            .setDescription(err.message)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"});
         interaction.editReply({
             embeds: [errorEmbed]
         });

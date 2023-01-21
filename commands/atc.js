@@ -22,6 +22,7 @@ export async function execute(interaction){
             .setTimestamp()
             .setTitle("Active controllers on " + icao.toUpperCase())
             .addFields(vatsimAtc, ivaoAtc)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
         await interaction.editReply({
             embeds: [atcEmbed]
         });
@@ -30,7 +31,8 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
-            .setDescription(err.message);
+            .setDescription(err.message)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"});
         interaction.editReply({
             embeds: [errorEmbed]
         });

@@ -35,6 +35,7 @@ export async function execute(interaction){
             .setTimestamp()
             .setTitle(`Active runways on ${icao.toUpperCase()}`)
             .setDescription(`Best runways for takeoff/landing: **${namesOfRunways.sort().join(", ")}**`)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
             if(showMetar){
                 rwyEmbed.addFields({name: "Metar report", value: `${codeBlock(result.raw)}`})
             }
@@ -46,7 +47,8 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
-            .setDescription(err.message);
+            .setDescription(err.message)
+            .setFooter({text: "Author: Maxxxii. All rights reserved ©"});
         interaction.editReply({
             embeds: [errorEmbed]
         });
