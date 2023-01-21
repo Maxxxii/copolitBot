@@ -28,9 +28,14 @@ export const getIvaoAtc = async function(icao){
     const result = await response.json();
     for(let i = 0; i < result.length;i++){
         const atisCallsign = result[i].callsign;
-        const atisAirport = atisCallsign.slice(0, 4)
+        const atisAirport = atisCallsign.slice(0, 4);
         if(atisAirport == icao.toUpperCase()){
-            controllersArr.push(`**${atisCallsign}** ${result[i].atcSession.frequency}`);
+            if(result[i].atcSession?.frequency != undefined){
+                controllersArr.push(`**${atisCallsign}** ${result[i].atcSession.frequency}`);
+            }
+            else{
+                controllersArr.push(`**${atisCallsign}**`);
+            }
         }
     }
     if(controllersArr.length != 0){

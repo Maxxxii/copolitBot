@@ -58,24 +58,22 @@ export async function execute(interaction){
 }
 
 function findBestRunway(anglesArr, angleToMatch){
+    let runwaysDiff = [];
     let bestRunways = [];
-    anglesArr.reduce((acc, el) => {
-        const accDistance1 = Math.abs(acc.hdg - angleToMatch)
-        const accDistance2 = 360 - acc.hdg + angleToMatch
-        const elDistance1 = Math.abs(el.hdg - angleToMatch)
-        const elDistance2 = 360 - el.hdg + angleToMatch
-        const currentDif = Math.abs(angleToMatch - (accDistance1 < accDistance2 ? accDistance1 : accDistance2))
-        const newDiff = Math.abs(angleToMatch - (elDistance1 < elDistance2 ? elDistance1 : elDistance2))
-        if(newDiff < currentDif){
-            bestRunways.push(el);
-            return el;
-        }
-        else if(newDiff > currentDif){
-            bestRunways.push(acc);
+    for(let i = 0; i < anglesArr.length;i++){
+        const distance1 = Math.abs(anglesArr[i].hdg - angleToMatch);
+        const distance2 = 360 - anglesArr[i].hdg + angleToMatch;
+        const diff = Math.abs(angleToMatch - (distance1 < distance2 ? distance1 : distance2));
+        runwaysDiff.push({rwy: anglesArr[i].rwy, diff: diff});
+    };
+    runwaysDiff.sort((a, b) => a.diff - b.diff);
+    runwaysDiff.reduce((acc, el) => {
+        if(el.diff <= acc.diff){
+            bestRunways.push(acc, el);
             return acc;
         }
         else{
-            bestRunways.push(el, acc);
+            bestRunways.push(acc);
             return acc;
         }
     });

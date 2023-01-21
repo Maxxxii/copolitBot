@@ -27,7 +27,9 @@ export const getAirportRunways = async function(icao){
     const declination = field.declination;
     const allRunwaysArr = runways.flatMap(runway => {
         if(runway.closed === "0"){
-            return [{rwy: runway.le_ident, hdg: runway.le_heading_degT - declination, ilsFreq: runway.le_ils ? runway.le_ils.freq : undefined, ilsCourse: runway.le_ils ? runway.le_ils.course : undefined }, {rwy: runway.he_ident, hdg: runway.he_heading_degT - declination, ilsFreq: runway.he_ils ? runway.he_ils.freq : undefined, ilsCourse: runway.he_ils ? runway.he_ils.course : undefined }]
+            const leHeading = (runway.le_heading_degT - declination) < 0 ? 360 + (runway.le_heading_degT - declination) : runway.le_heading_degT - declination;
+            const heHeading = (runway.he_heading_degT - declination) < 0 ? 360 + (runway.he_heading_degT - declination) : runway.he_heading_degT - declination;
+            return [{rwy: runway.le_ident, hdg: leHeading, ilsFreq: runway.le_ils ? runway.le_ils.freq : undefined, ilsCourse: runway.le_ils ? runway.le_ils.course : undefined }, {rwy: runway.he_ident, hdg: heHeading, ilsFreq: runway.he_ils ? runway.he_ils.freq : undefined, ilsCourse: runway.he_ils ? runway.he_ils.course : undefined }]
         }
     });
     const runwaysArr = allRunwaysArr.filter(runway => runway !== undefined);
