@@ -9,7 +9,10 @@ export const getVatsimAtis = async function(icao){
         const atisCallsign = atises[i].callsign;
         const atisAirport = atisCallsign.slice(0, atisCallsign.length - 5)
         if(atisAirport == icao.toUpperCase() && atises[i].text_atis){
-            vatsimAtis = {name: "VATSIM", value: `Frequency: **${atises[i].frequency}**\nATIS code: **${atises[i].atis_code}**\nText ATIS: ${codeBlock(atises[i].text_atis)}`};
+            vatsimAtis = {name: "VATSIM", value: `Frequency: **${atises[i].frequency}**\nATIS code: **${atises[i].atis_code != null ? atises[i].atis_code : "Not available"}**\nText ATIS: ${codeBlock(atises[i].text_atis)}`};
+            if(vatsimAtis == "<HTML><BODY><H1>503 SERVICE UNAVAILABLE</H1>"){
+                vatsimAtis = {name: "VATSIM", value: `Frequency: **${atises[i].frequency}**\nError: VATSIM service is unavailable`}
+            }
             break;
         }
     }
