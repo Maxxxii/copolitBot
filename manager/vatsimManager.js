@@ -1,6 +1,5 @@
 import { codeBlock } from "discord.js";
 import dayjs from 'dayjs';
-import fetch from "node-fetch";
 
 export const getVatsimAtis = async function(icao){
     let vatsimAtis;

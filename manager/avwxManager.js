@@ -1,7 +1,6 @@
 import { codeBlock } from 'discord.js';
 import dayjs from 'dayjs';
 import { getNearbyAirports } from './airlabsManager.js';
-import fetch from "node-fetch";
 
 export const getStationInfo = async function(id){
     let report = "";

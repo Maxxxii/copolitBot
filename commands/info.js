@@ -18,6 +18,7 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
+            .setTitile(`Information about ${icao.toUpperCase()}`)
             .addFields({name: "Report", value: report})
             .setFooter({text: "Author: Maxxxii. All rights reserved ©"})            
         await interaction.editReply({

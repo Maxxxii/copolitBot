@@ -29,6 +29,7 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
+            .setTitle(`Slopes of runways on ${icao.toUpperCase()}`)
             .setDescription(err.message)
             .setFooter({text: "Author: Maxxxii. All rights reserved ©"});
         interaction.editReply({

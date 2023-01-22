@@ -31,10 +31,10 @@ client.on('ready', () => {
     console.log(`${client.user.tag} successfuly log in`);
     (async () => {
         try{
-            await rest.put(Routes.applicationGuildCommands(CLIENT_ID, process.env.GUILD_ID), {
+            await rest.put(Routes.applicationCommands(CLIENT_ID), {
                 body: commands
             });
-            console.log("Successfully registered commands locally")
+            console.log("Successfully registered commands globally")
         } catch(err){
             console.error(err);
         }

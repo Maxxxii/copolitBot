@@ -1,5 +1,4 @@
 import { codeBlock } from "discord.js";
-import fetch from "node-fetch";
 
 
 export const getIvaoAtis = async function(icao){

@@ -19,7 +19,7 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
-            .setTitle(`Courses of runways on ${icao}`)
+            .setTitle(`Courses of runways on ${icao.toUpperCase()}`)
             .setDescription(coursesArr.join("\n"))
             .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
         await interaction.editReply({

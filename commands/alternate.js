@@ -27,6 +27,7 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
+            .setTitle(`Suggested alternates for ${icao.toUpperCase()}`)
             .setFields(fieldsArr)
             .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
         await interaction.editReply({

@@ -1,5 +1,4 @@
 import geomag from 'geomag';
-import fetch from "node-fetch";
 
 
 export const getAirportElevation = async function(icao){

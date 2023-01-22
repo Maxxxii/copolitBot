@@ -1,5 +1,4 @@
 import { getStationInfo } from "./avwxManager.js";
-import fetch from "node-fetch";
 
 export const getNearbyAirports = async function(id, range){
     const { result } = await getStationInfo(id);

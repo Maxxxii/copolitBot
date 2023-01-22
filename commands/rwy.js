@@ -68,7 +68,7 @@ function findBestRunway(anglesArr, angleToMatch){
     };
     runwaysDiff.sort((a, b) => a.diff - b.diff);
     runwaysDiff.reduce((acc, el) => {
-        if(el.diff <= acc.diff){
+        if(el.diff -1 <= acc.diff){
             bestRunways.push(acc, el);
             return acc;
         }

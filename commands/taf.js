@@ -24,6 +24,7 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
+            .setTitle(`TAF for ${icao.toUpperCase()}`)
             .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
             if(rawOnly){
                 tafEmbed.addFields(

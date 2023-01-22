@@ -16,6 +16,7 @@ export async function execute(interaction){
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
+            .setTitle(`Charts for ${icao.toUpperCase()}`)
             .setDescription(`**Your charts are [here](https://lukeairtool.net/viewchart.php?icao=${icao})**`)
             .setFooter({text: "Author: Maxxxii. Powered by LukeAirTool. All rights reserved ©"})
         await interaction.editReply({
