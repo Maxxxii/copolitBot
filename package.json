@@ -11,6 +11,7 @@
   "author": "Kacper Cichocki",
   "license": "ISC",
   "dependencies": {
+    "@devraelfreeze/discordjs-pagination": "^2.6.8",
     "dayjs": "^1.11.6",
     "discord.js": "^14.6.0",
     "dotenv": "^16.0.3",

@@ -47,7 +47,6 @@ export const getVatsimAtc = async function(icao){
     }
 }
 export const getVatsimEvents = async function(icao){
-    let vatsimEvents;
     const eventsArr = [];
     const response = await fetch(`https://my.vatsim.net/api/v1/events/all`);
     const result = await response.json();
@@ -68,13 +67,7 @@ export const getVatsimEvents = async function(icao){
             }
         }
     }
-    if(eventsArr.length != 0){
-        vatsimEvents = {name: "VATSIM", value: eventsArr.join("\n\n")};
-    }
-    else{
-        vatsimEvents = {name: "VATSIM", value: "No scheduled events on airpot"};
-    }
     return{
-        vatsimEvents
+        eventsArr
     }
 }
