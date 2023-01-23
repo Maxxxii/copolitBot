@@ -10,19 +10,41 @@ export const data =  new SlashCommandBuilder()
                 .setName("icao")
                 .setDescription("Put ICAO of airport")
                 .setRequired(true))
+        .addBooleanOption((option) =>
+            option
+                .setName("vatsim-only")
+                .setDescription("Choose if you want atc only from VATSIM")
+                .setRequired(false))
+        .addBooleanOption((option) =>
+            option
+                .setName("ivao-only")
+                .setDescription("Choose if you want atc only from IVAO")
+                .setRequired(false))
 export async function execute(interaction){
     try{        
         await interaction.deferReply();
         const icao = interaction.options.getString("icao");
-        const { vatsimAtc } = await getVatsimAtc(icao);
-        const { ivaoAtc } = await getIvaoAtc(icao);
+        const vatsimOnly = interaction.options.getBoolean("vatsim-only");
+        const ivaoOnly = interaction.options.getBoolean("ivao-only");
         const atcEmbed = new EmbedBuilder()
             .setAuthor({ name: "CopilotBot" })
             .setColor("ffffff")
             .setTimestamp()
             .setTitle("Active controllers on " + icao.toUpperCase())
-            .addFields(vatsimAtc, ivaoAtc)
             .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
+            if(vatsimOnly){                
+                const { vatsimAtc } = await getVatsimAtc(icao);                
+                atcEmbed.addFields(vatsimAtc);
+            }
+            else if(ivaoOnly){
+                const { ivaoAtc } = await getIvaoAtc(icao);  
+                atcEmbed.addFields(ivaoAtc);
+            }
+            else{
+                const { ivaoAtc } = await getIvaoAtc(icao);
+                const { vatsimAtc } = await getVatsimAtc(icao);
+                atcEmbed.addFields(vatsimAtc, ivaoAtc);
+            }
         await interaction.editReply({
             embeds: [atcEmbed]
         });

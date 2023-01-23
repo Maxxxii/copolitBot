@@ -41,6 +41,14 @@ client.on('ready', () => {
     })();
 });
 
+client.on('guildCreate', guild => {
+    const servers = JSON.parse(readFileSync('./db/servers.json'));
+    if(!servers[guild.id]){
+        servers[guild.id] = {language: "EN"};
+        writeFileSync('./db/servers.json', JSON.stringify(servers, null, 4));
+    }
+});
+
 client.on('interactionCreate', async interaction => {
     if(!interaction.isCommand()) return;
     const command = client.commands.get(interaction.commandName)
