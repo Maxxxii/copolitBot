@@ -40,7 +40,7 @@ export async function execute(interaction){
             .setColor("ffffff")
             .setTimestamp()
             .setDescription(`**${name}**`)
-            .addFields(vatsimAtis, ivaoAtis, {name: "Metar", value: `**${result.raw}**`}, {name: "Charts", value: `Charts for this airport are **[here](https://lukeairtool.net/viewchart.php?icao=${icao})**`}, {name: "Runways", value: `Best runways for takeoff/landing: **${namesOfRunways.sort().join(", ")}**`}, {name: "ILS", value: ilsArr.join("\n")})
+            .addFields(vatsimAtis, ivaoAtis, {name: "Metar", value: `**${result.raw}**`}, {name: "Charts", value: `Charts for this airport are **[here](https://lukeairtool.net/viewchart.php?icao=${icao.toUpperCase()})**`}, {name: "Runways", value: `Best runways for takeoff/landing: **${result.wind_direction.repr !== "VRB" ? namesOfRunways.sort().join(", ") : "Wind is variable. To get takeoff/landing runways look at ATIS."}**`}, {name: "ILS", value: ilsArr.join("\n")})
             .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
         await interaction.editReply({
             embeds: [briefEmbed]

@@ -34,7 +34,7 @@ export async function execute(interaction){
             .setColor("ffffff")
             .setTimestamp()
             .setTitle(`Active runways on ${icao.toUpperCase()}`)
-            .setDescription(`Best runways for takeoff/landing: **${namesOfRunways.sort().join(", ")}**`)
+            .setDescription(`Best runways for takeoff/landing: **${result.wind_direction.repr !== "VRB" ? namesOfRunways.sort().join(", ") : "Wind is variable. To get takeoff/landing runways look at ATIS."}**`)
             .setFooter({text: "Author: Maxxxii. All rights reserved ©"})
             if(showMetar){
                 rwyEmbed.addFields({name: "Metar report", value: `${codeBlock(result.raw)}`})

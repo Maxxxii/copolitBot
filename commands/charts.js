@@ -17,7 +17,7 @@ export async function execute(interaction){
             .setColor("ffffff")
             .setTimestamp()
             .setTitle(`Charts for ${icao.toUpperCase()}`)
-            .setDescription(`**Your charts are [here](https://lukeairtool.net/viewchart.php?icao=${icao})**`)
+            .setDescription(`**Your charts are [here](https://lukeairtool.net/viewchart.php?icao=${icao.toUpperCase()})**`)
             .setFooter({text: "Author: Maxxxii. Powered by LukeAirTool. All rights reserved ©"})
         await interaction.editReply({
             embeds: [chartsEmbed]
