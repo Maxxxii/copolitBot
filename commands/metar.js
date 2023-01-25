@@ -46,7 +46,7 @@ export async function execute(interaction){
                 else if(result.visibility?.value < 200){
                     metarEmbed.addFields({name: "Alert", value: `\n\n**Due to low visibility, we recomennd divert. Suggested alternates you can see below.**`}); 
                 }
-                const {fieldsArr} = await getAlternatesMetar(id);
+                const {fieldsArr} = await getAlternatesMetar(icao, 300);
                 metarEmbed.addFields(fieldsArr);
             }
         await interaction.editReply({
