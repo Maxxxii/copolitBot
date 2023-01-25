@@ -63,7 +63,7 @@ function findBestRunway(anglesArr, angleToMatch){
     for(let i = 0; i < anglesArr.length;i++){
         const distance1 = Math.abs(anglesArr[i].hdg - angleToMatch);
         const distance2 = 360 - anglesArr[i].hdg + angleToMatch;
-        const diff = Math.abs(angleToMatch - (distance1 < distance2 ? distance1 : distance2));
+        const diff = distance1 < distance2 ? distance1 : distance2;
         runwaysDiff.push({rwy: anglesArr[i].rwy, diff: diff});
     };
     runwaysDiff.sort((a, b) => a.diff - b.diff);
